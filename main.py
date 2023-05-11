@@ -18,7 +18,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 ckeditor = CKEditor(app)
 Bootstrap(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL",  "sqlite:///blog.db")
 
 gravatar = Gravatar(app,
                     size=100,
@@ -69,7 +69,7 @@ class  Comment(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('Users.id'))
     user_relation = relationship('User', back_populates='comment')
 
-db.create_all()
+# db.create_all()
 def admin_only(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
